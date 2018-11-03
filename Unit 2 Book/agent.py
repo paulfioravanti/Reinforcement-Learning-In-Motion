@@ -3,10 +3,10 @@ import numpy as np
 actionSpace = {'U': (-1,0), 'D': (1,0), 'L': (0,-1), 'R': (0,1)}
 
 class Agent:
-    def __init__(self, allowed_states, step_size = 0.15, randomFactor=0.2):
+    def __init__(self, allowed_states, step_size = 0.15, explore_probability = 0.2):
         self.stateHistory = [((0,0), 0)]
         self.G = {}  # present value of expected future rewards
-        self.randomFactor = randomFactor
+        self.explore_probability = explore_probability
         self.step_size = step_size
         self.initReward(allowed_states)
 
@@ -14,7 +14,7 @@ class Agent:
         maxG = -10e15
         nextMove = None
         randomN = np.random.random()
-        if randomN < self.randomFactor:
+        if randomN < self.explore_probability:
             nextMove = np.random.choice(allowedMoves)
         else:
             for action in allowedMoves:
@@ -48,4 +48,4 @@ class Agent:
             target += reward
 
         self.stateHistory = []
-        self.randomFactor -= 10e-5
+        self.explore_probability -= 10e-5
