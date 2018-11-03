@@ -22,7 +22,6 @@ class Agent:
         # action. aka epsilon in epsilon-greedy
         self.explore_upper_bound = explore_upper_bound
         self.__init_reward_estimates(states)
-        self.__construct_allowed_states()
 
     def choose_action(self, state, valid_actions):
         if should_explore():
