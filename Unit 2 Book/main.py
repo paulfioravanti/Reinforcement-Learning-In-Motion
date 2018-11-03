@@ -21,7 +21,7 @@ def run_simulation(step_size):
     print("Beginning simulation with:")
     print(f"Robot <step_size: {robot.step_size}, explore_probability: {robot.explore_probability}>")
     print("Maze:")
-    maze.printMaze()
+    maze.print_maze()
     print("Starting episodes...")
     for i in range(NUM_EPISODES):
         if i % 1000 == 0 and i > 0:

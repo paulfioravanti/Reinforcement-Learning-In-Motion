@@ -13,18 +13,18 @@ class Maze(object):
         self.steps = 0
         self.__construct_allowed_states()
 
-    def printMaze(self):
-        print('------------------------------------------')
+    def print_maze(self):
+        print("------------------------------------------")
         for row in self.maze:
             for col in row:
                 if col == 0:
-                    print('', end='\t')
+                    print("", end="\t")
                 elif col == 1:
-                    print('X', end='\t')
+                    print("X", end="\t")
                 elif col == 2:
-                    print('R', end='\t')
-            print('\n')
-        print('------------------------------------------')
+                    print("R", end="\t")
+            print("\n")
+        print("------------------------------------------")
 
     def isAllowedMove(self, state, action):
         y, x = state
