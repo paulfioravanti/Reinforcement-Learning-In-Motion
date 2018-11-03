@@ -1,16 +1,16 @@
 import numpy as np
-actionSpace = {'U': (-1,0), 'D': (1,0), 'L': (0,-1), 'R': (0,1)}
 
-class Maze(object):
-    def __init__(self):
+class Maze:
+    def __init__(self, action_space):
         self.maze = np.zeros((6,6)) # 6x6 maze - exit at 5,5
         self.maze[5, :5] = 1
         self.maze[:4, 5] = 1
         self.maze[2, 2:] = 1
         self.maze[3,2] = 1
         self.maze[0,0] = 2
-        self.robotPosition = (0,0)
+        self.robot_position = (0,0)
         self.steps = 0
+        self.action_space = action_space
         self.__construct_allowed_states()
 
     def print_maze(self):
@@ -28,8 +28,8 @@ class Maze(object):
 
     def isAllowedMove(self, state, action):
         y, x = state
-        y += actionSpace[action][0]
-        x += actionSpace[action][1]
+        y += self.action_space[action][0]
+        x += self.action_space[action][1]
         if y < 0 or x < 0 or y > 5 or x > 5:
             return False
 
@@ -40,26 +40,26 @@ class Maze(object):
 
 
     def updateMaze(self, action):
-        y,x = self.robotPosition
+        y,x = self.robot_position
         self.maze[y,x] = 0
-        y += actionSpace[action][0]
-        x += actionSpace[action][1]
-        self.robotPosition = (y,x)
+        y += self.action_space[action][0]
+        x += self.action_space[action][1]
+        self.robot_position = (y,x)
         self.maze[y,x] = 2
         self.steps += 1
 
-    def isGameOver(self):
-        if self.robotPosition == (5,5):
+    def is_game_over(self):
+        if self.robot_position == (5,5):
             return True
         else:
             return False
 
-    def getStateAndReward(self):
+    def get_state_and_reward(self):
         reward = self.giveReward()
-        return self.robotPosition, reward
+        return self.robot_position, reward
 
     def giveReward(self):
-        if self.robotPosition == (5,5):
+        if self.robot_position == (5,5):
             return 0
         else:
             return -1
@@ -70,7 +70,7 @@ class Maze(object):
             for x, col in enumerate(row):
                 if self.maze[(y,x)] != 1:
                     allowed_states[(y,x)] = []
-                    for action in actionSpace:
+                    for action in self.action_space:
                         if self.isAllowedMove((y,x), action):
                             allowed_states[(y,x)].append(action)
         self.allowed_states = allowed_states
