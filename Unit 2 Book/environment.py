@@ -11,7 +11,7 @@ class Maze(object):
         self.maze[0,0] = 2
         self.robotPosition = (0,0)
         self.steps = 0
-        self.constructAllowedStates()
+        self.__construct_allowed_states()
 
     def printMaze(self):
         print('------------------------------------------')
@@ -38,16 +38,6 @@ class Maze(object):
         else:
             return False
 
-    def constructAllowedStates(self):
-        allowedStates= {}
-        for y, row in enumerate(self.maze):
-            for x, col in enumerate(row):
-                if self.maze[(y,x)] != 1:
-                    allowedStates[(y,x)] = []
-                    for action in actionSpace:
-                        if self.isAllowedMove((y,x), action):
-                            allowedStates[(y,x)].append(action)
-        self.allowedStates = allowedStates
 
     def updateMaze(self, action):
         y,x = self.robotPosition
@@ -73,3 +63,14 @@ class Maze(object):
             return 0
         else:
             return -1
+
+    def __construct_allowed_states(self):
+        allowed_states= {}
+        for y, row in enumerate(self.maze):
+            for x, col in enumerate(row):
+                if self.maze[(y,x)] != 1:
+                    allowed_states[(y,x)] = []
+                    for action in actionSpace:
+                        if self.isAllowedMove((y,x), action):
+                            allowed_states[(y,x)].append(action)
+        self.allowed_states = allowed_states

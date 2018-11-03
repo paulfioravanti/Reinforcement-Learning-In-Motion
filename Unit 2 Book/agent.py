@@ -3,12 +3,12 @@ import numpy as np
 actionSpace = {'U': (-1,0), 'D': (1,0), 'L': (0,-1), 'R': (0,1)}
 
 class Agent(object):
-    def __init__(self, allowedStates, alpha=0.15, randomFactor=0.2):
+    def __init__(self, allowed_states, alpha=0.15, randomFactor=0.2):
         self.stateHistory = [((0,0), 0)]
         self.G = {}  # present value of expected future rewards
         self.randomFactor = randomFactor
         self.alpha = alpha
-        self.initReward(allowedStates)
+        self.initReward(allowed_states)
 
     def chooseAction(self, state, allowedMoves):
         maxG = -10e15
@@ -36,8 +36,8 @@ class Agent(object):
     def updateStateHistory(self, state, reward):
         self.stateHistory.append((state, reward))
 
-    def initReward(self, allowedStates):
-        for state in allowedStates:
+    def initReward(self, allowed_states):
+        for state in allowed_states:
             self.G[state] = np.random.uniform(low=-1.0, high=-0.1)
 
     def learn(self):

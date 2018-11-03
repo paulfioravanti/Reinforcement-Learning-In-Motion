@@ -3,14 +3,16 @@ from environment import Maze
 from agent import Agent
 import matplotlib.pyplot as plt
 
-NUM_EPISODES = 5000
+# NOTE: Re-enable after refactor
+# NUM_EPISODES = 5000
+NUM_EPISODES = 1
 EXPLORATION_CHANCE = 0.25
 
 def run_simulation(step_size):
     maze = Maze()
     robot = (
         Agent(
-            maze.allowedStates,
+            maze.allowed_states,
             alpha = step_size,
             randomFactor = EXPLORATION_CHANCE
         )
@@ -26,7 +28,7 @@ def run_simulation(step_size):
             print(f"{i} episodes completed...")
         while not maze.isGameOver():
             state, _reward = maze.getStateAndReward()
-            action = robot.chooseAction(state, maze.allowedStates[state])
+            action = robot.chooseAction(state, maze.allowed_states[state])
             maze.updateMaze(action)
             state, reward = maze.getStateAndReward()
             robot.updateStateHistory(state, reward)
@@ -48,4 +50,5 @@ if __name__ == "__main__":
     plt.legend([f"step_size = {step_size}", f"step_size = {step_size_2}"])
     print("A python window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
-    plt.show()
+    # NOTE: Re-enable this after refactor
+    # plt.show()
