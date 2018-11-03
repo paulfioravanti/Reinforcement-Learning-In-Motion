@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # NOTE: Re-enable after refactor
 # __NUM_EPISODES = 5000
 __NUM_EPISODES = 1
-__EXPLORATION_CHANCE = 0.25
+__EXPLORE_PROBABILITY = 0.25
 __ACTION_SPACE = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
 def run_simulation(step_size):
@@ -16,7 +16,7 @@ def run_simulation(step_size):
             __ACTION_SPACE,
             maze.allowed_states,
             step_size = step_size,
-            explore_probability = __EXPLORATION_CHANCE
+            explore_probability = __EXPLORE_PROBABILITY
         )
     )
     step_totals = []
@@ -32,18 +32,22 @@ def run_simulation(step_size):
         if i % 1000 == 0 and i > 0:
             print(f"{i} episodes completed...")
         while not maze.is_game_over():
-            state, _reward = maze.get_state_and_reward()
-            action = robot.choose_action(state, maze.allowed_states[state])
-            maze.updateMaze(action)
-            state, reward = maze.get_state_and_reward()
-            robot.update_state_history(state, reward)
+            run_episode(maze, robot)
         robot.learn()
-        step_totals.append(maze.steps)
+        step_totals.append(maze.num_steps)
+        # reset maze for next episode
         maze = Maze(__ACTION_SPACE)
+
     print("Simulation complete.")
     print("----------")
     return step_totals
 
+def run_episode(maze, robot):
+    state, _reward = maze.get_state_and_reward()
+    action = robot.choose_action(state, maze.allowed_states[state])
+    maze.update_maze(action)
+    state, reward = maze.get_state_and_reward()
+    robot.update_state_history(state, reward)
 
 if __name__ == "__main__":
     step_size_1 = 0.1
@@ -53,7 +57,7 @@ if __name__ == "__main__":
 
     plt.semilogy(step_totals_1, "b--", step_totals_2, "r--")
     plt.legend([f"step_size = {step_size_1}", f"step_size = {step_size_2}"])
-    print("A python window has opened.")
+    print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     # NOTE: Re-enable this after refactor
     # plt.show()

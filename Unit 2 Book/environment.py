@@ -9,7 +9,7 @@ class Maze:
         self.maze[3,2] = 1
         self.maze[0,0] = 2
         self.robot_position = (0,0)
-        self.steps = 0
+        self.num_steps = 0
         self.action_space = action_space
         self.__construct_allowed_states()
 
@@ -26,27 +26,14 @@ class Maze:
             print("\n")
         print("------------------------------------------")
 
-    def isAllowedMove(self, state, action):
-        y, x = state
-        y += self.action_space[action][0]
-        x += self.action_space[action][1]
-        if y < 0 or x < 0 or y > 5 or x > 5:
-            return False
-
-        if self.maze[y,x] == 0 or self.maze[y,x] == 2:
-            return True
-        else:
-            return False
-
-
-    def updateMaze(self, action):
+    def update_maze(self, action):
         y,x = self.robot_position
         self.maze[y,x] = 0
         y += self.action_space[action][0]
         x += self.action_space[action][1]
         self.robot_position = (y,x)
         self.maze[y,x] = 2
-        self.steps += 1
+        self.num_steps += 1
 
     def is_game_over(self):
         if self.robot_position == (5,5):
@@ -55,10 +42,10 @@ class Maze:
             return False
 
     def get_state_and_reward(self):
-        reward = self.giveReward()
+        reward = self.__give_reward()
         return self.robot_position, reward
 
-    def giveReward(self):
+    def __give_reward(self):
         if self.robot_position == (5,5):
             return 0
         else:
@@ -71,6 +58,18 @@ class Maze:
                 if self.maze[(y,x)] != 1:
                     allowed_states[(y,x)] = []
                     for action in self.action_space:
-                        if self.isAllowedMove((y,x), action):
+                        if self.__is_allowed_move((y,x), action):
                             allowed_states[(y,x)].append(action)
         self.allowed_states = allowed_states
+
+    def __is_allowed_move(self, state, action):
+        y, x = state
+        y += self.action_space[action][0]
+        x += self.action_space[action][1]
+        if y < 0 or x < 0 or y > 5 or x > 5:
+            return False
+
+        if self.maze[y,x] == 0 or self.maze[y,x] == 2:
+            return True
+        else:
+            return False
