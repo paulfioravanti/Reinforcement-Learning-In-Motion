@@ -2,12 +2,12 @@ import numpy as np
 
 actionSpace = {'U': (-1,0), 'D': (1,0), 'L': (0,-1), 'R': (0,1)}
 
-class Agent(object):
-    def __init__(self, allowed_states, alpha=0.15, randomFactor=0.2):
+class Agent:
+    def __init__(self, allowed_states, step_size = 0.15, randomFactor=0.2):
         self.stateHistory = [((0,0), 0)]
         self.G = {}  # present value of expected future rewards
         self.randomFactor = randomFactor
-        self.alpha = alpha
+        self.step_size = step_size
         self.initReward(allowed_states)
 
     def chooseAction(self, state, allowedMoves):
@@ -44,7 +44,7 @@ class Agent(object):
         target = 0 # we only learn when we beat the maze
 
         for prev, reward in reversed(self.stateHistory):
-            self.G[prev] = self.G[prev] + self.alpha * (target - self.G[prev])
+            self.G[prev] = self.G[prev] + self.step_size * (target - self.G[prev])
             target += reward
 
         self.stateHistory = []

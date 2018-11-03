@@ -13,13 +13,13 @@ def run_simulation(step_size):
     robot = (
         Agent(
             maze.allowed_states,
-            alpha = step_size,
+            step_size = step_size,
             randomFactor = EXPLORATION_CHANCE
         )
     )
     step_totals = []
     print("Beginning simulation with:")
-    print(f"Robot <step_size: {robot.alpha}, randomFactor: {robot.randomFactor}>")
+    print(f"Robot <step_size: {robot.step_size}, randomFactor: {robot.randomFactor}>")
     print("Maze:")
     maze.printMaze()
     print("Starting episodes...")
