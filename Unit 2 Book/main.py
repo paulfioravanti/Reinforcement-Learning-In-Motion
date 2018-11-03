@@ -21,7 +21,10 @@ def run_simulation(step_size):
     )
     step_totals = []
     print("Beginning simulation with:")
-    print(f"Robot <step_size: {robot.step_size}, explore_probability: {robot.explore_probability}>")
+    print(
+        f"Robot <step_size: {robot.step_size},",
+        f"explore_probability: {robot.explore_probability}>"
+    )
     print("Maze:")
     maze.print_maze()
     print("Starting episodes...")
