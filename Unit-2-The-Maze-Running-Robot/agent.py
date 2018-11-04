@@ -71,16 +71,20 @@ class Agent:
         next_action = None
 
         for action in valid_actions:
-            new_state = (
-                tuple([sum(x) for x in zip(state, self.action_space[action])])
-            )
-            if self.reward_estimates[new_state] >= max_estimate:
+            potential_new_state = self.__transition_state(state, action)
+            if self.reward_estimates[potential_new_state] >= max_estimate:
                 next_action = action
-                max_estimate = self.reward_estimates[new_state]
+                max_estimate = self.reward_estimates[potential_new_state]
         return next_action
 
     def __update_reward_estimate_for_state(self, state, target):
         reward_estimate = self.reward_estimates[state]
         self.reward_estimates[state] = (
             reward_estimate + self.step_size * (target - reward_estimate)
+        )
+
+    def __transition_state(self, state, action):
+        return tuple(
+            sum(translation)
+                for translation in zip(state, self.action_space[action])
         )
