@@ -6,12 +6,12 @@ class Agent:
 
     # 80% exploit, 20% explore
     def __init__(
-            self, env_actions, allowed_states, step_size = 0.15,
-            explore_probability = 0.2):
+            self, env_actions, allowed_states, step_size=0.15,
+            explore_probability=0.2):
         # Represents actions mapped to robot translations on a board
         self.env_actions = env_actions
         # list of states and reward pairs
-        self.state_rewards = [((0,0), 0)]
+        self.state_rewards = [((0, 0), 0)]
         # Constant value for Controling rate/speed of learning. aka alpha
         # Usually between 0 and 1
         # - if this is 0, then only the current state is considered and no
@@ -30,8 +30,7 @@ class Agent:
     def choose_action(self, state, allowed_moves):
         if self.__should_explore():
             return self.__explore(allowed_moves)
-        else:
-            return self.__exploit(state, allowed_moves)
+        return self.__exploit(state, allowed_moves)
 
     def update_state_rewards(self, state, reward):
         self.state_rewards.append((state, reward))
@@ -56,14 +55,16 @@ class Agent:
         for state in states:
             self.reward_estimates[state] = self.__random_estimate()
 
-    def __random_estimate(self):
+    @staticmethod
+    def __random_estimate():
         # high is rounded to 0.1 so that no square looks better than the exit
-        return np.random.uniform(low = -1.0, high = -0.1)
+        return np.random.uniform(low=-1.0, high=-0.1)
 
     def __should_explore(self):
         return np.random.random() < self.explore_probability
 
-    def __explore(self, valid_actions):
+    @staticmethod
+    def __explore(valid_actions):
         return np.random.choice(valid_actions)
 
     def __exploit(self, state, valid_actions):
@@ -86,5 +87,5 @@ class Agent:
     def __transition_state(self, state, action):
         return tuple(
             sum(translation)
-                for translation in zip(state, self.env_actions[action])
+            for translation in zip(state, self.env_actions[action])
         )
