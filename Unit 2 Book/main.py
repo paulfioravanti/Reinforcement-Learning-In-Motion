@@ -3,9 +3,7 @@ from environment import Maze
 from agent import Agent
 import matplotlib.pyplot as plt
 
-# NOTE: Re-enable after refactor
-# __NUM_EPISODES = 5000
-__NUM_EPISODES = 1
+__NUM_EPISODES = 5000
 __EXPLORE_PROBABILITY = 0.25
 __ACTION_SPACE = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
@@ -47,7 +45,7 @@ def run_episode(maze, robot):
     action = robot.choose_action(state, maze.allowed_states[state])
     maze.update_maze(action)
     state, reward = maze.get_state_and_reward()
-    robot.update_state_history(state, reward)
+    robot.update_state_rewards(state, reward)
 
 if __name__ == "__main__":
     step_size_1 = 0.1
@@ -59,5 +57,4 @@ if __name__ == "__main__":
     plt.legend([f"step_size = {step_size_1}", f"step_size = {step_size_2}"])
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
-    # NOTE: Re-enable this after refactor
-    # plt.show()
+    plt.show()
