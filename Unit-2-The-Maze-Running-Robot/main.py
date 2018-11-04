@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 
 __NUM_EPISODES = 5000
 __EXPLORE_PROBABILITY = 0.25
-__ACTION_SPACE = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
+__ENV_ACTIONS = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
 def run_simulation(step_size):
-    maze = Maze(__ACTION_SPACE)
+    maze = Maze(__ENV_ACTIONS)
     robot = (
         Agent(
-            __ACTION_SPACE,
+            __ENV_ACTIONS,
             maze.allowed_states,
             step_size = step_size,
             explore_probability = __EXPLORE_PROBABILITY
@@ -34,7 +34,7 @@ def run_simulation(step_size):
         robot.learn()
         step_totals.append(maze.num_steps)
         # reset maze for next episode
-        maze = Maze(__ACTION_SPACE)
+        maze = Maze(__ENV_ACTIONS)
 
     print("Simulation complete.")
     print("----------")

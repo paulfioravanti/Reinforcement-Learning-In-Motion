@@ -11,8 +11,8 @@ class Maze:
     __ROBOT = 2
     __COLUMN_DISPLAYS = { 0: "", 1: "X", 2: "R" }
 
-    def __init__(self, action_space):
-        self.action_space = action_space
+    def __init__(self, env_actions):
+        self.env_actions = env_actions
         # 6x6 maze - exit at 5,5
         self.maze = np.zeros(self.__MAZE_SIZE)
         self.num_steps = 0
@@ -31,8 +31,8 @@ class Maze:
     def update_maze(self, action):
         y, x = self.robot_position
         self.maze[y, x] = self.__EMPTY_SPACE
-        y += self.action_space[action][0]
-        x += self.action_space[action][1]
+        y += self.env_actions[action][0]
+        x += self.env_actions[action][1]
         self.robot_position = (y, x)
         self.maze[y, x] = self.__ROBOT
         self.num_steps += 1
@@ -65,15 +65,15 @@ class Maze:
             for x, _column in enumerate(row):
                 if self.maze[(y, x)] != self.__WALL:
                     allowed_states[(y, x)] = []
-                    for action in self.action_space:
+                    for action in self.env_actions:
                         if self.__is_valid_move((y, x), action):
                             allowed_states[(y, x)].append(action)
         self.allowed_states = allowed_states
 
     def __is_valid_move(self, state, action):
         y, x = state
-        y += self.action_space[action][0]
-        x += self.action_space[action][1]
+        y += self.env_actions[action][0]
+        x += self.env_actions[action][1]
         if self.__is_out_of_bounds(y, x):
             return False
 
