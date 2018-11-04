@@ -4,8 +4,8 @@ class Maze:
     MAZE_SIZE = (6, 6)
     START_OF_MAZE = (0, 0)
     END_OF_MAZE = (5, 5)
-    X_BOUNDARY = 5
-    Y_BOUNDARY = 5
+    X_BOUNDARY = 6
+    Y_BOUNDARY = 6
     EMPTY_SPACE = 0
     WALL = 1
     ROBOT = 2
@@ -83,7 +83,11 @@ class Maze:
             return False
 
     def __is_out_of_bounds(self, y, x):
-        return y < 0 or x < 0 or y > self.Y_BOUNDARY or x > self.X_BOUNDARY
+        return (
+            y not in range(0, self.Y_BOUNDARY) or
+            x not in range(0, self.X_BOUNDARY)
+        )
+
 
     def __is_empty_space(self, y, x):
         return self.maze[y, x] == self.EMPTY_SPACE
