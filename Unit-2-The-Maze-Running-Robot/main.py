@@ -1,7 +1,6 @@
-import numpy as np
+import matplotlib.pyplot as plt
 from environment import Maze
 from agent import Agent
-import matplotlib.pyplot as plt
 
 __NUM_EPISODES = 5000
 __EXPLORE_PROBABILITY = 0.25
@@ -13,8 +12,8 @@ def run_simulation(step_size):
         Agent(
             __ENV_ACTIONS,
             maze.allowed_states,
-            step_size = step_size,
-            explore_probability = __EXPLORE_PROBABILITY
+            step_size=step_size,
+            explore_probability=__EXPLORE_PROBABILITY
         )
     )
     step_totals = []
@@ -48,13 +47,13 @@ def run_episode(maze, robot):
     robot.update_state_rewards(state, reward)
 
 if __name__ == "__main__":
-    step_size_1 = 0.1
-    step_totals_1 = run_simulation(step_size = step_size_1)
-    step_size_2 = 0.99
-    step_totals_2 = run_simulation(step_size = step_size_2)
+    STEP_SIZE_1 = 0.1
+    STEP_TOTALS_1 = run_simulation(step_size=STEP_SIZE_1)
+    STEP_SIZE_2 = 0.99
+    STEP_TOTALS_2 = run_simulation(step_size=STEP_SIZE_2)
 
-    plt.semilogy(step_totals_1, "b--", step_totals_2, "r--")
-    plt.legend([f"step_size = {step_size_1}", f"step_size = {step_size_2}"])
+    plt.semilogy(STEP_TOTALS_1, "b--", STEP_TOTALS_2, "r--")
+    plt.legend([f"step_size = {STEP_SIZE_1}", f"step_size = {STEP_SIZE_2}"])
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     plt.show()

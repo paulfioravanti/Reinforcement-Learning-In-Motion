@@ -9,7 +9,7 @@ class Maze:
     __EMPTY_SPACE = 0
     __WALL = 1
     __ROBOT = 2
-    __COLUMN_DISPLAYS = { 0: "", 1: "X", 2: "R" }
+    __COLUMN_DISPLAYS = {0: "", 1: "X", 2: "R"}
 
     def __init__(self, env_actions):
         self.env_actions = env_actions
@@ -18,13 +18,14 @@ class Maze:
         self.num_steps = 0
         self.__init_walls()
         self.__init_allowed_states()
-        self.__init_robot()
+        self.maze[0, 0] = self.__ROBOT
+        self.robot_position = self.__START_OF_MAZE
 
     def print_maze(self):
         print("------------------------------------------")
         for row in self.maze:
             for column in row:
-                print(self.__COLUMN_DISPLAYS[column], end = "\t")
+                print(self.__COLUMN_DISPLAYS[column], end="\t")
             print("\n")
         print("------------------------------------------")
 
@@ -38,10 +39,7 @@ class Maze:
         self.num_steps += 1
 
     def is_game_over(self):
-        if self.robot_position == self.__END_OF_MAZE:
-            return True
-        else:
-            return False
+        return self.robot_position == self.__END_OF_MAZE
 
     def get_state_and_reward(self):
         return (self.robot_position, self.__give_reward())
@@ -56,11 +54,10 @@ class Maze:
     def __give_reward(self):
         if self.robot_position == self.__END_OF_MAZE:
             return 0
-        else:
-            return -1
+        return -1
 
     def __init_allowed_states(self):
-        allowed_states= {}
+        allowed_states = {}
         for y, row in enumerate(self.maze):
             for x, _column in enumerate(row):
                 if self.maze[(y, x)] != self.__WALL:
@@ -79,8 +76,7 @@ class Maze:
 
         if self.__is_empty_space(y, x) or self.__is_initial_robot_position(y, x):
             return True
-        else:
-            return False
+        return False
 
     def __is_out_of_bounds(self, y, x):
         return (
@@ -94,7 +90,3 @@ class Maze:
 
     def __is_initial_robot_position(self, y, x):
         return self.maze[y, x] == self.__ROBOT
-
-    def __init_robot(self):
-        self.maze[0, 0] = self.__ROBOT
-        self.robot_position = self.__START_OF_MAZE
