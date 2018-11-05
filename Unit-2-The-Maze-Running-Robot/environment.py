@@ -1,33 +1,32 @@
 import numpy as np
 
 class Maze:
-    __MAZE_SIZE = (6, 6)
-    __START_OF_MAZE = (0, 0)
-    __END_OF_MAZE = (5, 5)
+    __START = (0, 0)
+    __FINISH = (5, 5)
     __X_BOUNDARY = 6
     __Y_BOUNDARY = 6
     __EMPTY_SPACE = 0
     __WALL = 1
     __ROBOT = 2
-    __COLUMN_DISPLAYS = {0: "", 1: "X", 2: "R"}
+    __COLUMN_DISPLAYS = {0: "  ", 1: " X", 2: " R"}
 
     def __init__(self, env_actions):
         self.env_actions = env_actions
         # 6x6 maze - exit at 5,5
-        self.maze = np.zeros(self.__MAZE_SIZE)
+        self.maze = np.zeros((self.__Y_BOUNDARY, self.__X_BOUNDARY))
         self.num_steps = 0
         self.__init_walls()
         self.__init_allowed_states()
         self.maze[0, 0] = self.__ROBOT
-        self.robot_position = self.__START_OF_MAZE
+        self.robot_position = self.__START
 
     def print_maze(self):
-        print("------------------------------------------")
+        print("----------------------")
         for row in self.maze:
             for column in row:
-                print(self.__COLUMN_DISPLAYS[column], end="\t")
+                print(self.__COLUMN_DISPLAYS[column], end="  ")
             print("\n")
-        print("------------------------------------------")
+        print("----------------------")
 
     def update_maze(self, action):
         y, x = self.robot_position
@@ -39,7 +38,7 @@ class Maze:
         self.num_steps += 1
 
     def is_game_over(self):
-        return self.robot_position == self.__END_OF_MAZE
+        return self.robot_position == self.__FINISH
 
     def get_state_and_reward(self):
         return (self.robot_position, self.__give_reward())
@@ -52,7 +51,7 @@ class Maze:
         self.maze[3, 2] = self.__WALL
 
     def __give_reward(self):
-        if self.robot_position == self.__END_OF_MAZE:
+        if self.robot_position == self.__FINISH:
             return 0
         return -1
 
