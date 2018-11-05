@@ -71,8 +71,9 @@ class Agent:
 
     def __update_reward_estimate_for_state(self, state, target):
         old_estimate = self.reward_estimates[state]
+        estimate_error = target - old_estimate
         self.reward_estimates[state] = (
-            old_estimate + self.step_size * (target - old_estimate)
+            old_estimate + self.step_size * estimate_error
         )
 
     def __transition_state(self, state, action):
