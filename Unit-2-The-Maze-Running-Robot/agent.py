@@ -55,17 +55,8 @@ class Agent:
         for state in states:
             self.reward_estimates[state] = self.__random_estimate()
 
-    @staticmethod
-    def __random_estimate():
-        # high is rounded to 0.1 so that no square looks better than the exit
-        return np.random.uniform(low=-1.0, high=-0.1)
-
     def __should_explore(self):
         return np.random.random() < self.explore_probability
-
-    @staticmethod
-    def __explore(valid_actions):
-        return np.random.choice(valid_actions)
 
     def __exploit(self, state, valid_actions):
         max_estimate = self.__LOW_ESTIMATE
@@ -79,9 +70,9 @@ class Agent:
         return next_action
 
     def __update_reward_estimate_for_state(self, state, target):
-        reward_estimate = self.reward_estimates[state]
+        old_estimate = self.reward_estimates[state]
         self.reward_estimates[state] = (
-            reward_estimate + self.step_size * (target - reward_estimate)
+            old_estimate + self.step_size * (target - old_estimate)
         )
 
     def __transition_state(self, state, action):
@@ -89,3 +80,12 @@ class Agent:
             sum(translation)
             for translation in zip(state, self.env_actions[action])
         )
+
+    @staticmethod
+    def __random_estimate():
+        # high is rounded to 0.1 so that no square looks better than the exit
+        return np.random.uniform(low=-1.0, high=-0.1)
+
+    @staticmethod
+    def __explore(valid_actions):
+        return np.random.choice(valid_actions)
