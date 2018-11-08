@@ -6,13 +6,13 @@ class Agent:
 
     # 80% exploit, 20% explore
     def __init__(
-            self, action_space, allowed_states, step_size=0.15,
+            self, action_space, allowed_states, alpha=0.15,
             explore_probability=0.2):
         # Represents actions mapped to robot translations on a board
         self.action_space = action_space
         # list of states and reward pairs
         self.state_rewards = [((0, 0), 0)]
-        # Constant value for Controling rate/speed of learning. aka alpha
+        # Constant value for controlling rate/speed of learning.
         # Usually between 0 and 1
         # - if this is 0, then only the current state is considered and no
         # estimates get updated (therefore agent is not really learning
@@ -20,7 +20,7 @@ class Agent:
         # - If this is 1, the estimation of the expected future reward
         # becomes the running total itself ie the agent considers every step it
         # has taken
-        self.step_size = step_size
+        self.alpha = alpha
         # Value to determine the chance of picking a different action at random
         # versus continuing to exploit the reward generated from a different
         # action. aka epsilon in epsilon-greedy
@@ -73,7 +73,7 @@ class Agent:
         old_estimate = self.reward_estimates[state]
         estimate_error = target - old_estimate
         self.reward_estimates[state] = (
-            old_estimate + self.step_size * estimate_error
+            old_estimate + self.alpha * estimate_error
         )
 
     def __transition_state(self, state, action):

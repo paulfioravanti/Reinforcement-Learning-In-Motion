@@ -6,20 +6,20 @@ __NUM_EPISODES = 5000
 __EXPLORE_PROBABILITY = 0.25
 __ACTION_SPACE = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
-def run_simulation(step_size):
+def run_simulation(alpha):
     maze = Maze(__ACTION_SPACE)
     robot = (
         Agent(
             __ACTION_SPACE,
             maze.allowed_states,
-            step_size=step_size,
+            alpha=alpha,
             explore_probability=__EXPLORE_PROBABILITY
         )
     )
     step_totals = []
     print("Beginning simulation with:")
     print(
-        f"Robot <step_size: {robot.step_size},",
+        f"Robot <alpha: {robot.alpha},",
         f"explore_probability: {robot.explore_probability}>"
     )
     print("Maze:")
@@ -47,13 +47,13 @@ def run_episode(maze, robot):
     robot.update_state_rewards(state, reward)
 
 if __name__ == "__main__":
-    STEP_SIZE_1 = 0.1
-    STEP_TOTALS_1 = run_simulation(step_size=STEP_SIZE_1)
-    STEP_SIZE_2 = 0.99
-    STEP_TOTALS_2 = run_simulation(step_size=STEP_SIZE_2)
+    ALPHA_1 = 0.1
+    STEP_TOTALS_1 = run_simulation(alpha=ALPHA_1)
+    ALPHA_2 = 0.99
+    STEP_TOTALS_2 = run_simulation(alpha=ALPHA_2)
 
     plt.semilogy(STEP_TOTALS_1, "b--", STEP_TOTALS_2, "r--")
-    plt.legend([f"step_size = {STEP_SIZE_1}", f"step_size = {STEP_SIZE_2}"])
+    plt.legend([f"alpha = {ALPHA_1}", f"alpha = {ALPHA_2}"])
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     plt.show()
