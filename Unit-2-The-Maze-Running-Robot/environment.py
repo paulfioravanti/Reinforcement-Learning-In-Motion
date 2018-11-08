@@ -21,12 +21,12 @@ class Maze:
         self.robot_position = self.__START
 
     def print_maze(self):
-        print("----------------------")
+        print("-------------------------")
         for row in self.maze:
+            print("|", end="")
             for column in row:
-                print(self.__COLUMN_DISPLAYS[column], end="  ")
-            print("\n")
-        print("----------------------")
+                print(self.__COLUMN_DISPLAYS[column], end=" |")
+            print("\n-------------------------")
 
     def update_maze(self, action):
         y, x = self.robot_position
