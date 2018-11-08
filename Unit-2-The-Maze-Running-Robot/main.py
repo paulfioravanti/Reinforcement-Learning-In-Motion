@@ -3,7 +3,7 @@ from environment import Maze
 from agent import Agent
 
 __NUM_EPISODES = 5000
-__EXPLORE_PROBABILITY = 0.25
+__EPSILON = 0.25
 __ACTION_SPACE = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
 def run_simulation(alpha):
@@ -13,15 +13,12 @@ def run_simulation(alpha):
             __ACTION_SPACE,
             maze.allowed_states,
             alpha=alpha,
-            explore_probability=__EXPLORE_PROBABILITY
+            epsilon=__EPSILON
         )
     )
     step_totals = []
     print("Beginning simulation with:")
-    print(
-        f"Robot <alpha: {robot.alpha},",
-        f"explore_probability: {robot.explore_probability}>"
-    )
+    print(f"Robot <alpha: {robot.alpha}, epsilon: {robot.epsilon}>")
     print("Maze:")
     maze.print_maze()
     print("Starting episodes...")

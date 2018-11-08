@@ -5,9 +5,7 @@ class Agent:
     __LOW_ESTIMATE = -10e15
 
     # 80% exploit, 20% explore
-    def __init__(
-            self, action_space, allowed_states, alpha=0.15,
-            explore_probability=0.2):
+    def __init__(self, action_space, allowed_states, alpha=0.15, epsilon=0.2):
         # Represents actions mapped to robot translations on a board
         self.action_space = action_space
         # list of states and reward pairs
@@ -23,8 +21,8 @@ class Agent:
         self.alpha = alpha
         # Value to determine the chance of picking a different action at random
         # versus continuing to exploit the reward generated from a different
-        # action. aka epsilon in epsilon-greedy
-        self.explore_probability = explore_probability
+        # action. aka the epsilon in epsilon-greedy
+        self.epsilon = epsilon
         self.__init_reward_estimates(allowed_states)
 
     def choose_action(self, state, allowed_moves):
@@ -46,7 +44,7 @@ class Agent:
         # zero-out Agent's memory to make room for the next episode
         self.state_rewards = []
         # marginally increase chance of exploitation
-        self.explore_probability -= self.__MARGINAL_INCREASE
+        self.epsilon -= self.__MARGINAL_INCREASE
 
     def __init_reward_estimates(self, states):
         # keys are states, and values are estimates of future rewards
@@ -56,7 +54,7 @@ class Agent:
             self.reward_estimates[state] = self.__random_estimate()
 
     def __should_explore(self):
-        return np.random.random() < self.explore_probability
+        return np.random.random() < self.epsilon
 
     def __exploit(self, state, valid_actions):
         max_estimate = self.__LOW_ESTIMATE
