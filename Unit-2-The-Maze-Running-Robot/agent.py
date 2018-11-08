@@ -6,10 +6,10 @@ class Agent:
 
     # 80% exploit, 20% explore
     def __init__(
-            self, env_actions, allowed_states, step_size=0.15,
+            self, action_space, allowed_states, step_size=0.15,
             explore_probability=0.2):
         # Represents actions mapped to robot translations on a board
-        self.env_actions = env_actions
+        self.action_space = action_space
         # list of states and reward pairs
         self.state_rewards = [((0, 0), 0)]
         # Constant value for Controling rate/speed of learning. aka alpha
@@ -79,7 +79,7 @@ class Agent:
     def __transition_state(self, state, action):
         return tuple(
             sum(translation)
-            for translation in zip(state, self.env_actions[action])
+            for translation in zip(state, self.action_space[action])
         )
 
     @staticmethod
