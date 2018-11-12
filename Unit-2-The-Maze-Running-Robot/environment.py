@@ -29,12 +29,11 @@ class Maze:
             print("\n-------------------------")
 
     def update_maze(self, action):
-        y, x = self.robot_position
-        self.maze[y, x] = self.__EMPTY_SPACE
-        y += self.action_space[action][0]
-        x += self.action_space[action][1]
-        self.robot_position = (y, x)
-        self.maze[y, x] = self.__ROBOT
+        current_position = self.robot_position
+        new_position = self.__next_state(current_position, action)
+        self.maze[current_position] = self.__EMPTY_SPACE
+        self.robot_position = new_position
+        self.maze[new_position] = self.__ROBOT
         self.num_steps += 1
 
     def is_game_over(self):
@@ -67,25 +66,25 @@ class Maze:
         self.allowed_states = allowed_states
 
     def __is_valid_move(self, state, action):
-        y, x = state
-        y += self.action_space[action][0]
-        x += self.action_space[action][1]
-        if self.__is_out_of_bounds(y, x):
+        proposed_state = self.__next_state(state, action)
+
+        if (self.__is_out_of_bounds(proposed_state) or
+                self.__is_wall(proposed_state)):
             return False
+        return True
 
-        if self.__is_empty_space(y, x) or self.__is_initial_robot_position(y, x):
-            return True
-        return False
+    def __next_state(self, state, action):
+        return tuple(
+            position + transition for position, transition in
+            zip(state, self.action_space[action])
+        )
 
-    def __is_out_of_bounds(self, y, x):
+    def __is_out_of_bounds(self, state):
+        y, x = state
         return (
             y not in range(0, self.__Y_BOUNDARY) or
             x not in range(0, self.__X_BOUNDARY)
         )
 
-
-    def __is_empty_space(self, y, x):
-        return self.maze[y, x] == self.__EMPTY_SPACE
-
-    def __is_initial_robot_position(self, y, x):
-        return self.maze[y, x] == self.__ROBOT
+    def __is_wall(self, state):
+        return self.maze[state] == self.__WALL

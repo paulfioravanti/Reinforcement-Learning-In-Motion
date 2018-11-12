@@ -62,8 +62,8 @@ if __name__ == "__main__":
     ALPHA_2 = 0.99
     STEP_TOTALS_2 = run_simulation(alpha=ALPHA_2, watch=False)
 
-    plt.semilogy(STEP_TOTALS_1, "b--", STEP_TOTALS_2, "r--")
-    plt.legend([f"alpha = {ALPHA_1}", f"alpha = {ALPHA_2}"])
+    plt.semilogy(STEP_TOTALS_2, "r--", STEP_TOTALS_1, "b--")
+    plt.legend([f"alpha = {ALPHA_2}", f"alpha = {ALPHA_1}"])
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     plt.show()
