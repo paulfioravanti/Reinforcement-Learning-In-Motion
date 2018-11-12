@@ -1,8 +1,8 @@
 import numpy as np
 
 class Agent:
-    __MARGINAL_INCREASE = 10e-5
-    __LOW_ESTIMATE = -10e15
+    __EXPLORATION_STEP = 10e-5
+    __HIGH_NEGATIVE_ESTIMATE = -10e15
 
     # 80% exploit, 20% explore
     def __init__(self, action_space, allowed_states, alpha=0.15, epsilon=0.2):
@@ -43,8 +43,8 @@ class Agent:
 
         # zero-out Agent's memory to make room for the next episode
         self.state_rewards = []
-        # marginally increase chance of exploitation
-        self.epsilon -= self.__MARGINAL_INCREASE
+        # marginally decrease chance of exploration in the next episode
+        self.epsilon -= self.__EXPLORATION_STEP
 
     def __init_reward_estimates(self, states):
         # keys are states, and values are estimates of future rewards
@@ -57,7 +57,7 @@ class Agent:
         return np.random.random() < self.epsilon
 
     def __exploit(self, state, valid_actions):
-        max_estimate = self.__LOW_ESTIMATE
+        max_estimate = self.__HIGH_NEGATIVE_ESTIMATE
         next_action = None
 
         for action in valid_actions:
