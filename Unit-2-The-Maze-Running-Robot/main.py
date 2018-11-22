@@ -55,6 +55,7 @@ def run_episode(maze, robot):
     maze.update_maze(action)
     state, reward = maze.get_state_and_reward()
     robot.update_state_rewards(state, reward)
+    maze.check_robot_learning()
 
 if __name__ == "__main__":
     ALPHA_1 = 0.1
@@ -62,8 +63,12 @@ if __name__ == "__main__":
     ALPHA_2 = 0.99
     STEP_TOTALS_2 = run_simulation(alpha=ALPHA_2, watch=False)
 
-    plt.semilogy(STEP_TOTALS_2, "r--", STEP_TOTALS_1, "b--")
-    plt.legend([f"alpha = {ALPHA_2}", f"alpha = {ALPHA_1}"])
+    plt.subplot(211)
+    plt.semilogy(STEP_TOTALS_1, "b--")
+    plt.legend([f"alpha = {ALPHA_1}"])
+    plt.subplot(212)
+    plt.semilogy(STEP_TOTALS_2, "r--")
+    plt.legend([f"alpha = {ALPHA_2}"])
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     plt.show()

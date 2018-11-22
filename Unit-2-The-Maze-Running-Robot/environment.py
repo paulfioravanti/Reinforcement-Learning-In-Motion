@@ -9,6 +9,7 @@ class Maze:
     __WALL = 1
     __ROBOT = 2
     __COLUMN_DISPLAYS = {0: "  ", 1: " X", 2: " R"}
+    __MAX_ALLOWED_STEPS = 1000
 
     def __init__(self, action_space):
         self.action_space = action_space
@@ -41,6 +42,10 @@ class Maze:
 
     def get_state_and_reward(self):
         return (self.robot_position, self.__give_reward())
+
+    def check_robot_learning(self):
+        if self.num_steps > self.__MAX_ALLOWED_STEPS:
+            self.robot_position = self.__FINISH
 
     def __init_walls(self):
         # `1`s are walls
