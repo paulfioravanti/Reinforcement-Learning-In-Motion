@@ -70,13 +70,13 @@ class Bandit:
     def __error(self, convergence_target):
         return convergence_target - self.__old_estimate()
 
-def simulate(num_arms, epsilon, num_pulls):
+def simulate(num_simulations, num_arms, epsilon, num_pulls):
     reward_history = np.zeros(num_pulls)
-    print(f"Beginning {__NUM_SIMULATIONS} simulations with:")
+    print(f"Beginning {num_simulations} simulations with:")
     print(f"Bandit <num_arms: {num_arms}, epsilon: {epsilon}, ", end="")
     print(f"num_pulls {num_pulls}>")
     print(f"Number of simulations completed:")
-    for simulation_num in range(__NUM_SIMULATIONS):
+    for simulation_num in range(num_simulations):
         rewards = np.random.randn(num_arms)
         bandit = Bandit(num_arms, rewards, epsilon)
         if __should_report_simulation_number(simulation_num):
@@ -85,7 +85,7 @@ def simulate(num_arms, epsilon, num_pulls):
             reward = bandit.pull()
             bandit.update_mean(reward)
             reward_history[arm_pull] += reward
-    print(f"{__NUM_SIMULATIONS}.")
+    print(f"{num_simulations}.")
     # Average
     return reward_history / __NUM_SIMULATIONS
 
@@ -101,9 +101,9 @@ if __name__ == "__main__":
     __EPSILON1 = 0.1
     __EPSILON2 = 0.01
     __EPSILON3 = 0.0
-    __RUN1 = simulate(__NUM_ARMS, epsilon=__EPSILON1, num_pulls=__NUM_PULLS)
-    __RUN2 = simulate(__NUM_ARMS, epsilon=__EPSILON2, num_pulls=__NUM_PULLS)
-    __RUN3 = simulate(__NUM_ARMS, epsilon=__EPSILON3, num_pulls=__NUM_PULLS)
+    __RUN1 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON1, num_pulls=__NUM_PULLS)
+    __RUN2 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON2, num_pulls=__NUM_PULLS)
+    __RUN3 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON3, num_pulls=__NUM_PULLS)
     plt.plot(__RUN1, "b--", __RUN2, "r--", __RUN3, "g--")
     plt.legend([
         f"epsilon={__EPSILON1}",
