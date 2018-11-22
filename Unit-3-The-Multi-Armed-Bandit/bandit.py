@@ -110,6 +110,8 @@ if __name__ == "__main__":
         f"epsilon={__EPSILON2}",
         f"epsilon={__EPSILON3}, Pure greedy"
     ])
+    print("Simulations complete.")
+    print("----------")
     print("A python matplotlib window has opened.")
     print("Switch over to it, and quit there to terminate this script.")
     plt.show()
