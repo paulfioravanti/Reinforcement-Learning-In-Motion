@@ -20,6 +20,7 @@ class Bandit:
 
     def pull(self):
         self.__pull_arm()
+        # Rewards are non-stationary.
         self.__randomly_increment_rewards()
         return self.__reward()
 
@@ -70,6 +71,7 @@ class Bandit:
         if self.mode is Mode.SAMPLE_AVERAGE:
             self.__sample_average_update(reward)
         else:
+            # Weights most recent rewards more heavily than long past rewards.
             self.__constant_update(reward)
 
     # Q(A) <- Q(A) + 1/N(A)[R-Q(A)]
@@ -97,8 +99,14 @@ class Bandit:
     # Q(A) <- Q(A) + 0.1*[R-Q(A)]
     def __constant_update(self, reward):
         self.reward_estimates[self.last_arm_pulled] = (
-            self.__old_estimate() + 0.1 * self.__error(reward)
+            self.__old_estimate() +
+            self.__constant_alpha() *
+            self.__error(reward)
         )
+
+    @staticmethod
+    def __constant_alpha():
+        return 0.1
 
 def simulate(num_simulations, num_arms, epsilon, num_pulls, mode):
     reward_history = np.zeros(num_pulls)
