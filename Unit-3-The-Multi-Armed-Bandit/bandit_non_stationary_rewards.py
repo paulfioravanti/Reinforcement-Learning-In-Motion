@@ -77,9 +77,9 @@ class Bandit:
     # Q(A) <- Q(A) + 1/N(A)[R-Q(A)]
     def __sample_average_update(self, reward):
         self.reward_estimates[self.last_arm_pulled] = (
-            self.__old_estimate() +
-            self.__sample_average_alpha() *
-            self.__error(reward)
+            self.__old_estimate()
+            + self.__sample_average_alpha()
+            * self.__error(reward)
         )
 
     # Q(A)
@@ -99,9 +99,9 @@ class Bandit:
     # Q(A) <- Q(A) + 0.1*[R-Q(A)]
     def __constant_update(self, reward):
         self.reward_estimates[self.last_arm_pulled] = (
-            self.__old_estimate() +
-            self.__constant_alpha() *
-            self.__error(reward)
+            self.__old_estimate()
+            + self.__constant_alpha()
+            * self.__error(reward)
         )
 
     @staticmethod

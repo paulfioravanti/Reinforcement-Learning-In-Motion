@@ -101,9 +101,24 @@ if __name__ == "__main__":
     __EPSILON1 = 0.1
     __EPSILON2 = 0.01
     __EPSILON3 = 0.0
-    __RUN1 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON1, num_pulls=__NUM_PULLS)
-    __RUN2 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON2, num_pulls=__NUM_PULLS)
-    __RUN3 = simulate(__NUM_SIMULATIONS, __NUM_ARMS, epsilon=__EPSILON3, num_pulls=__NUM_PULLS)
+    __RUN1 = simulate(
+        __NUM_SIMULATIONS,
+        __NUM_ARMS,
+        epsilon=__EPSILON1,
+        num_pulls=__NUM_PULLS
+    )
+    __RUN2 = simulate(
+        __NUM_SIMULATIONS,
+        __NUM_ARMS,
+        epsilon=__EPSILON2,
+        num_pulls=__NUM_PULLS
+    )
+    __RUN3 = simulate(
+        __NUM_SIMULATIONS,
+        __NUM_ARMS,
+        epsilon=__EPSILON3,
+        num_pulls=__NUM_PULLS
+    )
     plt.plot(__RUN1, "b--", __RUN2, "r--", __RUN3, "g--")
     plt.legend([
         f"epsilon={__EPSILON1}",
