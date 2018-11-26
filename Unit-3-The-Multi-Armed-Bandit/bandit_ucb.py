@@ -50,18 +50,33 @@ class Bandit:
         return self.exploration_degree > 0
 
     def __run_upper_confidence_bound(self):
-        arr = np.zeros(self.num_arms)
+        reward_estimates = np.zeros(self.num_arms)
         for arm_num, approx_reward in enumerate(self.reward_estimates):
-            if self.__is_maximising(arm_num):
+            if self.__action_is_maximising(arm_num):
+                # we've found the action we want to execute,
+                # so break out of loop
                 self.last_arm_pulled = arm_num
                 break
             else:
-                arr[arm_num] = approx_reward + self.exploration_degree * np.sqrt(np.log(self.steps)/self.pulled_arms_tally[arm_num])
+                reward_estimates[arm_num] = (
+                  self.__upper_confidence_bound_selection(
+                    approx_reward, arm_num
+                  )
+                )
         else:
-            self.last_arm_pulled = self.__random_best_arm(arr)
+            self.last_arm_pulled = self.__random_best_arm(reward_estimates)
 
-    def __is_maximising(self, arm_number):
+    def __action_is_maximising(self, arm_number):
         return self.pulled_arms_tally[arm_number] == 0
+
+    def __upper_confidence_bound_selection(self, approximate_reward, arm_num):
+        return (
+            approximate_reward
+            + self.exploration_degree
+            * np.sqrt(
+                np.log(self.steps) / self.pulled_arms_tally[arm_num]
+              )
+        )
 
     def __run_epsilon_greedy(self):
         if self.__should_exploit():
@@ -73,13 +88,13 @@ class Bandit:
         return np.random.random() > self.epsilon
 
     @staticmethod
-    def __random_best_arm(estimates):
+    def __random_best_arm(reward_estimates):
         # np.where returns an array of row idxs and an array of col idxs but
         # since columns are of length 1, the latter is an empty array.
         # Regardless, the first value in the array needs to be specifically
         # retrieved.
         # REF: https://stackoverflow.com/q/34667282/567863
-        best_arms = np.where(estimates == estimates.max())[0]
+        best_arms = np.where(reward_estimates == reward_estimates.max())[0]
         return np.random.choice(best_arms)
 
     def __random_arm(self):
