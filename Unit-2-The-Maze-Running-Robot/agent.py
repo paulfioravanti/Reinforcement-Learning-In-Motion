@@ -11,6 +11,8 @@ class Agent:
         # list of states and reward pairs
         self.state_rewards = [((0, 0), 0)]
         # Constant value for controlling rate/speed of learning.
+        # The learning rate or step size determines to what extent newly
+        # acquired information overrides old information.
         # Usually between 0 and 1
         # - if this is 0, then only the current state is considered and no
         # estimates get updated (therefore agent is not really learning
