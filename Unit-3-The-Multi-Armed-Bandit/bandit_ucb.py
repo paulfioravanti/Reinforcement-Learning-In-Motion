@@ -59,9 +59,9 @@ class Bandit:
                 break
             else:
                 reward_estimates[arm_num] = (
-                  self.__upper_confidence_bound_selection(
-                    approx_reward, arm_num
-                  )
+                    self.__upper_confidence_bound_selection(
+                        approx_reward, arm_num
+                    )
                 )
         else:
             # At = argmax(Qt(a) + c √ ln t / Nt(a))
@@ -78,7 +78,7 @@ class Bandit:
             + self.exploration_degree
             * np.sqrt(
                 np.log(self.steps) / self.pulled_arms_tally[arm_num]
-              )
+            )
         )
 
     def __run_epsilon_greedy(self):
