@@ -64,11 +64,14 @@ class Bandit:
                   )
                 )
         else:
+            # At = argmax(Qt(a) + c √ ln t / Nt(a))
             self.last_arm_pulled = self.__random_best_arm(reward_estimates)
 
+    # Nt(a) = 0
     def __action_is_maximising(self, arm_number):
         return self.pulled_arms_tally[arm_number] == 0
 
+    # Qt(a) + c √ ln t / Nt(a)
     def __upper_confidence_bound_selection(self, approximate_reward, arm_num):
         return (
             approximate_reward
