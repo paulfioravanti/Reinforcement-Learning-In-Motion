@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import gym
 from agent import Agent
 
-def run_episode(robot):
+def run_simulation(robot):
     episode_rewards = []
     rewards = 0
     for _episode in range(EPISODES):
@@ -48,9 +48,9 @@ if __name__ == "__main__":
         13: 2,
         14: 2
     }
-
     ROBOT1 = Agent(discount=DISCOUNT, states=STATES, policy=None)
     ROBOT2 = Agent(discount=DISCOUNT, states=STATES, policy=DIRECTED_POLICY)
-    run_episode(ROBOT1)
+
+    run_simulation(ROBOT1)
     print("\n------------------------\n")
-    run_episode(ROBOT2)
+    run_simulation(ROBOT2)
