@@ -13,9 +13,9 @@ def run_simulation(robot):
             observation, reward, done, _info = ENV.step(action)
             robot.update_memory(observation, reward)
             rewards += reward
-        robot.update_value_functions()
+        robot.update_value_function()
         episode_rewards.append(rewards)
-    robot.print_value_functions()
+    robot.print_value_function()
     plt.plot(episode_rewards)
     plt.show()
 
