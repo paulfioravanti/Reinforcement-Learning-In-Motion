@@ -9,11 +9,7 @@ def run_simulation(robot):
         done = False
         observation = ENV.reset()
         while not done:
-            if robot.policy is None:
-                # randomly sample actions in action space
-                action = ENV.action_space.sample()
-            else:
-                action = robot.choose_action(observation)
+            action = __choose_action(robot, observation)
             observation, reward, done, _info = ENV.step(action)
             robot.update_memory(observation, reward)
             rewards += reward
@@ -22,6 +18,13 @@ def run_simulation(robot):
     robot.print_value_functions()
     plt.plot(episode_rewards)
     plt.show()
+
+def __choose_action(robot, observation):
+    if robot.policy is None:
+        # randomly sample actions in action space
+        return ENV.action_space.sample()
+    else:
+        return robot.choose_action(observation)
 
 if __name__ == "__main__":
     ENV = gym.make("FrozenLake-v0")
