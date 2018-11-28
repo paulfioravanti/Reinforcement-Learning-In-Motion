@@ -17,7 +17,7 @@ class GridWorld:
         self.rows = rows
         self.columns = columns
         self.grid = np.zeros((rows, columns))
-        self.non_terminal_spaces = self.__non_terminal_spaces()
+        self.non_terminal_spaces = self.__init_non_terminal_spaces()
         self.all_spaces = list(range(self.rows * self.columns))
         self.action_space = {
             "up": -self.rows,
@@ -27,9 +27,9 @@ class GridWorld:
         }
         self.probability_functions = self.__init_probability_functions()
 
-    def __non_terminal_space_range(self):
+    def __init_non_terminal_spaces(self):
         return list(map(
-            lambda: i + 1,
+            lambda i: i + 1,
             range(
                 self.rows
                 * self.columns
@@ -60,7 +60,7 @@ class GridWorld:
                 probability_functions[key] = 1
         return probability_functions
 
-    def __off_grid_move(new_state, old_state):
+    def __off_grid_move(self, new_state, old_state):
         # if we move into a row not in the grid
         if new_state not in self.all_spaces:
             return True
