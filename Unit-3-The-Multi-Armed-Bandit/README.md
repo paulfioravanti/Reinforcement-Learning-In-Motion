@@ -1,4 +1,4 @@
-# Unit 2: The Multi Armed Bandit
+# Unit 3: The Multi Armed Bandit
 
 ## Run
 
