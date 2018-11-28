@@ -1,5 +1,6 @@
 import numpy as np
 
+# pylint: disable-msg=too-many-locals
 def iterate_values(grid, value_function_estimates, policy, discount, theta):
     converged = False
     while not converged:
@@ -24,7 +25,7 @@ def iterate_values(grid, value_function_estimates, policy, discount, theta):
             )
             best_value_function_estimates = (
                 np.where(new_value_function_estimates ==
-                    new_value_function_estimates.max())[0]
+                         new_value_function_estimates.max())[0]
             )
             best_state = np.random.choice(best_value_function_estimates)
             value_function_estimates[state] = (
@@ -37,7 +38,7 @@ def iterate_values(grid, value_function_estimates, policy, discount, theta):
                     - value_function_estimates[state]
                 )
             )
-            converged = True if delta < theta else False
+            converged = delta < theta
 
     for state in grid.non_terminal_spaces:
         new_values = []

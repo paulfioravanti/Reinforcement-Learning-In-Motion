@@ -1,5 +1,6 @@
 import numpy as np
 
+# pylint: disable-msg=too-many-locals
 def improve_policy(grid, value_function_estimate, policy, discount):
     stable = True
     new_policy = {}

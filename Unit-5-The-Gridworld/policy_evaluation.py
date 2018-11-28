@@ -1,5 +1,6 @@
 import numpy as np
 
+# pylint: disable-msg=too-many-locals
 def evaluate_policy(grid, value_function, policy, discount, theta):
     # policy evaluation for the random choice in gridworld
     converged = False
@@ -12,10 +13,18 @@ def evaluate_policy(grid, value_function, policy, discount, theta):
             for action in policy[state]:
                 for key in grid.probability_functions:
                     (new_state, reward, old_state, action_performed) = key
-                    # We're given the state and action, want new state and reward
+                    # We're given the state and action,
+                    # want new state and reward
                     if old_state == state and action == action_performed:
-                        total += weight * grid.probability_functions[key] * (reward + discount * value_function[new_state])
+                        total += (
+                            weight
+                            * grid.probability_functions[key]
+                            * (reward + discount * value_function[new_state])
+                        )
             value_function[state] = total
-            delta = max(delta, np.abs(old_state_value_function - value_function[state]))
-            converged = True if delta < theta else False
+            delta = max(
+                delta,
+                np.abs(old_state_value_function - value_function[state])
+            )
+            converged = delta < theta
     return value_function
