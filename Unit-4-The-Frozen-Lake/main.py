@@ -1,6 +1,15 @@
+from collections import defaultdict
 import matplotlib.pyplot as plt
 import gym
 from agent import Agent
+
+class RandomPolicy(defaultdict):
+    def __init__(self, env):
+        super().__init__()
+        self.env = env
+
+    def __missing__(self, key):
+        return self.env.action_space.sample()
 
 def run_simulation(robot):
     episode_rewards = []
@@ -9,7 +18,7 @@ def run_simulation(robot):
         done = False
         observation = ENV.reset()
         while not done:
-            action = __choose_action(robot, observation)
+            action = robot.choose_action(observation)
             observation, reward, done, _info = ENV.step(action)
             robot.update_memory(observation, reward)
             rewards += reward
@@ -19,19 +28,13 @@ def run_simulation(robot):
     plt.plot(episode_rewards)
     plt.show()
 
-def __choose_action(robot, observation):
-    if robot.policy is None:
-        # randomly sample actions in action space
-        return ENV.action_space.sample()
-    else:
-        return robot.choose_action(observation)
-
 if __name__ == "__main__":
     ENV = gym.make("FrozenLake-v0")
     NUM_STATES = 16
     STATES = [state for state in range(NUM_STATES)]
     EPISODES = 1000
     DISCOUNT = 0.9
+    RANDOM_POLICY = RandomPolicy(ENV)
     # an attempt at a reasonable policy
     # 0 = left, 1 = down, 2 = right, 3 = up
     DIRECTED_POLICY = {
@@ -51,7 +54,7 @@ if __name__ == "__main__":
         13: 2,
         14: 2
     }
-    ROBOT1 = Agent(discount=DISCOUNT, states=STATES, policy=None)
+    ROBOT1 = Agent(discount=DISCOUNT, states=STATES, policy=RANDOM_POLICY)
     ROBOT2 = Agent(discount=DISCOUNT, states=STATES, policy=DIRECTED_POLICY)
 
     run_simulation(ROBOT1)
