@@ -31,7 +31,7 @@ def run_simulation(robot):
 if __name__ == "__main__":
     ENV = gym.make("FrozenLake-v0")
     NUM_STATES = 16
-    STATES = [state for state in range(NUM_STATES)]
+    STATES = list(range(NUM_STATES))
     EPISODES = 1000
     DISCOUNT = 0.9
     RANDOM_POLICY = RandomPolicy(ENV)
