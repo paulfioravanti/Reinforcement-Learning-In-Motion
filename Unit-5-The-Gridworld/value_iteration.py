@@ -1,36 +1,63 @@
 import numpy as np
 
-def iterate_values(grid, V, policy, GAMMA, THETA):
+def iterate_values(grid, value_function_estimates, policy, discount, theta):
     converged = False
     while not converged:
-        DELTA = 0
+        delta = 0
         for state in grid.non_terminal_spaces:
-            oldV = V[state]
-            newV = []
+            old_value_function_estimates = value_function_estimates[state]
+            new_value_function_estimates = []
             for action in grid.action_space:
                 for key in grid.probability_functions:
-                    (newState, reward, oldState, act) = key
-                    if state == oldState and action == act:
-                        newV.append(grid.probability_functions[key]*(reward+GAMMA*V[newState]))
-            newV = np.array(newV)
-            bestV = np.where(newV == newV.max())[0]
-            bestState = np.random.choice(bestV)
-            V[state] = newV[bestState]
-            DELTA = max(DELTA, np.abs(oldV-V[state]))
-            converged = True if DELTA < THETA else False
+                    (new_state, reward, old_state, act) = key
+                    if state == old_state and action == act:
+                        new_value_function_estimates.append(
+                            grid.probability_functions[key]
+                            * (
+                                reward
+                                + discount
+                                * value_function_estimates[new_state]
+                            )
+                        )
+            new_value_function_estimates = (
+                np.array(new_value_function_estimates)
+            )
+            best_value_function_estimates = (
+                np.where(new_value_function_estimates ==
+                    new_value_function_estimates.max())[0]
+            )
+            best_state = np.random.choice(best_value_function_estimates)
+            value_function_estimates[state] = (
+                new_value_function_estimates[best_state]
+            )
+            delta = max(
+                delta,
+                np.abs(
+                    old_value_function_estimates
+                    - value_function_estimates[state]
+                )
+            )
+            converged = True if delta < theta else False
 
     for state in grid.non_terminal_spaces:
-        newValues = []
+        new_values = []
         actions = []
         for action in grid.action_space:
             for key in grid.probability_functions:
-                (newState, reward, oldState, act) = key
-                if state == oldState and action == act:
-                    newValues.append(grid.probability_functions[key]*(reward+GAMMA*V[newState]))
+                (new_state, reward, old_state, act) = key
+                if state == old_state and action == act:
+                    new_values.append(
+                        grid.probability_functions[key]
+                        * (
+                            reward
+                            + discount
+                            * value_function_estimates[new_state]
+                        )
+                    )
             actions.append(action)
-        newValues = np.array(newValues)
-        bestActionIDX = np.where(newValues == newValues.max())[0]
-        bestActions = actions[bestActionIDX[0]]
-        policy[state] = bestActions
+        new_values = np.array(new_values)
+        best_action_idx = np.where(new_values == new_values.max())[0]
+        best_actions = actions[best_action_idx[0]]
+        policy[state] = best_actions
 
-    return V, policy
+    return value_function_estimates, policy
