@@ -1,63 +1,63 @@
 from grid import GridWorld
-from policy_evaluation import evaluate_policy
-from policy_improvement import improve_policy
+# from policy_evaluation import evaluate_policy
+# from policy_improvement import improve_policy
 from value_iteration import iterate_values
 from utils import print_value_function_estimates
 
 if __name__ == "__main__":
-    grid = GridWorld(4, 4)
+    GRID = GridWorld(4, 4)
     THETA = 10e-6
     DISCOUNT = 1.0
 
     # initialize V(s)
-    value_function_estimates = {state: 0 for state in grid.all_spaces}
+    VALUE_FUNCTION_ESTIMATES = {state: 0 for state in GRID.all_spaces}
 
     # Initialize policy
-    policy = {}
-    for state in grid.non_terminal_spaces:
-        policy[state] = list(grid.action_space.keys())
+    POLICY = {}
+    for state in GRID.non_terminal_spaces:
+        POLICY[state] = list(GRID.action_space.keys())
 
     # Initial policy evaluation
-    # value_function_estimates = evaluate_policy(
-    #     grid, value_function_estimates, policy, DISCOUNT, THETA
+    # VALUE_FUNCTION_ESTIMATES = evaluate_policy(
+    #     GRID, VALUE_FUNCTION_ESTIMATES, POLICY, DISCOUNT, THETA
     # )
-    # print_value_function_estimates(value_function_estimates, grid)
+    # print_value_function_estimates(VALUE_FUNCTION_ESTIMATES, GRID)
 
     # Iterative policy evaluation
     # stable = False
     # while not stable:
-    #     value_function_estimates = evaluate_policy(
-    #         grid, value_function_estimates, policy, DISCOUNT, THETA
+    #     VALUE_FUNCTION_ESTIMATES = evaluate_policy(
+    #         GRID, VALUE_FUNCTION_ESTIMATES, POLICY, DISCOUNT, THETA
     #     )
-    #     print_value_function_estimates(value_function_estimates, grid)
-    #     stable, policy = improve_policy(
-    #         grid, value_function_estimates, policy, DISCOUNT
+    #     print_value_function_estimates(VALUE_FUNCTION_ESTIMATES, GRID)
+    #     stable, POLICY = improve_policy(
+    #         GRID, VALUE_FUNCTION_ESTIMATES, POLICY, DISCOUNT
     #     )
 
-    # print_value_function_estimates(value_function_estimates, grid)
-    # for state in policy:
-    #     print(state, policy[state])
+    # print_value_function_estimates(VALUE_FUNCTION_ESTIMATES, GRID)
+    # for state in POLICY:
+    #     print(state, POLICY[state])
     # print("\n---------------\n")
 
     # # initialize V(s)
     # V = {}
-    # for state in grid.stateSpacePlus:
+    # for state in GRID.stateSpacePlus:
     #     V[state] = 0
     # # Reinitialize policy
-    # policy = {}
-    # for state in grid.stateSpace:
-    #     policy[state] = [key for key in grid.actionSpace.keys()]
+    # POLICY = {}
+    # for state in GRID.stateSpace:
+    #     POLICY[state] = [key for key in GRID.actionSpace.keys()]
 
     # 2 round of value iteration ftw
     for i in range(2):
-        value_function_estimates, policy = (
+        VALUE_FUNCTION_ESTIMATES, POLICY = (
             iterate_values(
-                grid, value_function_estimates, policy, DISCOUNT, THETA
+                GRID, VALUE_FUNCTION_ESTIMATES, POLICY, DISCOUNT, THETA
             )
         )
 
-    print_value_function_estimates(value_function_estimates, grid)
+    print_value_function_estimates(VALUE_FUNCTION_ESTIMATES, GRID)
 
-    for state in policy:
-        print(state, policy[state])
+    for state in POLICY:
+        print(state, POLICY[state])
     print()
