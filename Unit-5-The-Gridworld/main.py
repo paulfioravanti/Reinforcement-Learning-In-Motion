@@ -1,6 +1,6 @@
 from grid import GridWorld
 from policy_evaluation import evaluate_policy
-# from policyImprovement import improvePolicy
+from policy_improvement import improve_policy
 # from valueIteration import iterateValues
 from utils import print_value_function_estimates
 
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     GAMMA = 1.0
 
     # initialize V(s)
-    value_function = {state: 0 for state in grid.all_spaces}
+    value_function_estimates = {state: 0 for state in grid.all_spaces}
 
     # Initialize policy
     policy = {}
@@ -18,20 +18,26 @@ if __name__ == "__main__":
         policy[state] = list(grid.action_space.keys())
 
     # Initial policy evaluation
-    value_function = evaluate_policy(grid, value_function, policy, GAMMA, THETA)
-    print_value_function_estimates(value_function, grid)
+    # value_function_estimates = evaluate_policy(
+    #     grid, value_function_estimates, policy, GAMMA, THETA
+    # )
+    # print_value_function_estimates(value_function_estimates, grid)
 
     # Iterative policy evaluation
-    # stable = False
-    # while not stable:
-    #     V = evaluatePolicy(grid, V, policy, GAMMA, THETA)
-    #     printV(V, grid)
-    #     stable, policy = improvePolicy(grid, V, policy, GAMMA)
+    stable = False
+    while not stable:
+        value_function_estimates = evaluate_policy(
+            grid, value_function_estimates, policy, GAMMA, THETA
+        )
+        print_value_function_estimates(value_function_estimates, grid)
+        stable, policy = improve_policy(
+            grid, value_function_estimates, policy, GAMMA
+        )
 
-    # printV(V, grid)
-    # for state in policy:
-    #     print(state, policy[state])
-    # print('\n---------------\n')
+    print_value_function_estimates(value_function_estimates, grid)
+    for state in policy:
+        print(state, policy[state])
+    print("\n---------------\n")
 
     # # initialize V(s)
     # V = {}

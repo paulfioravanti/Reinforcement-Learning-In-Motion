@@ -31,6 +31,13 @@ class GridWorld:
         x, y = self.get_agent_row_and_column()
         self.grid[x][y] = 1
 
+    def set_state(self, state):
+        x, y = self.__get_agent_row_and_column()
+        self.grid[x][y] = 0
+        self.agent_position = state
+        x, y = self.__get_agent_row_and_column()
+        self.grid[x][y] = 1
+
     def __init_non_terminal_spaces(self):
         return list(map(
             lambda i: i + 1,
@@ -65,14 +72,6 @@ class GridWorld:
                     key = (resulting_state, -1, state, action)
                 probability_functions[key] = 1
         return probability_functions
-
-    def set_state(self, state):
-        x, y = self.__get_agent_row_and_column()
-        self.grid[x][y] = 0
-        self.agent_position = state
-        x, y = self.__get_agent_row_and_column()
-        self.grid[x][y] = 1
-
 
     def step(self, action):
         resulting_state = self.agent_position + self.action_space[action]
