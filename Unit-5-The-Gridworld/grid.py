@@ -1,5 +1,6 @@
 import numpy as np
 
+# pylint: disable-msg=too-few-public-methods
 class GridWorld:
     """
     Gridworld defined by m x n matrix with
@@ -62,12 +63,14 @@ class GridWorld:
 
     def __off_grid_move(self, new_state, old_state):
         # if we move into a row not in the grid
-        if new_state not in self.all_spaces:
+        if (
+                new_state not in self.all_spaces or
+                (
+                    old_state % self.rows == 0 and
+                    new_state  % self.rows == self.rows - 1
+                ) or
+                old_state % self.rows == self.rows - 1 and
+                new_state % self.rows == 0
+        ):
             return True
-        # if we're trying to wrap around to next row
-        elif old_state % self.rows == 0 and new_state  % self.rows == self.rows - 1:
-            return True
-        elif old_state % self.rows == self.rows - 1 and new_state % self.rows == 0:
-            return True
-        else:
-            return False
+        return False
