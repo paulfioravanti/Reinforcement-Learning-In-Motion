@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
         states_returns.reverse()
         states_visited = []
-        for state, estimate in states_returns:
+        for state, returns in states_returns:
             if state not in states_visited:
                 RETURNS[state].append(returns)
                 VALUE_FUNCTION_ESTIMATE[state] = np.mean(RETURNS[state])
