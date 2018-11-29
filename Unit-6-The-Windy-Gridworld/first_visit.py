@@ -1,53 +1,55 @@
-from windygrid import WindyGrid
+from windy_grid import WindyGrid
 import numpy as np
-from utils import printV
+from utils import print_value_function
 
-if __name__ == '__main__':
-    grid = WindyGrid(6,6, wind=[0, 0, 1, 2, 1, 0])
-    GAMMA = 0.9
+if __name__ == "__main__":
+    GRID = WindyGrid(6, 6, wind=[0, 0, 1, 2, 1, 0])
+    DISCOUNT = 0.9
+    NUM_GAMES = 500
+    STATUS_INTERVAL = 50
 
-    policy = {}
-    for state in grid.stateSpace:
-        policy[state] = grid.possibleActions
+    POLICY = {}
+    for state in GRID.state_space:
+        POLICY[state] = GRID.possible_actions
 
-    V = {}
-    for state in grid.stateSpacePlus:
-        V[state] = 0
+    VALUE_FUNCTION_ESTIMATE = {}
+    for state in GRID.total_state_space:
+        VALUE_FUNCTION_ESTIMATE[state] = 0
 
+    RETURNS = {}
+    for state in GRID.state_space:
+        RETURNS[state] = []
 
-    returns = {}
-    for state in grid.stateSpace:
-        returns[state] = []
-
-    for i in range(500):
-        observation, done = grid.reset()
+    for i in range(NUM_GAMES):
+        observation, done = GRID.reset()
         memory = []
-        statesReturns = []
-        if i % 50 == 0:
-            print('starting episode', i)
+        states_returns = []
+        if i % STATUS_INTERVAL == 0:
+            print("starting episode", i)
         while not done:
             # attempt to follow the policy
-            action = np.random.choice(policy[observation])
-            observation_, reward, done, info = grid.step(action)
+            action = np.random.choice(POLICY[observation])
+            observation_, reward, done, info = GRID.step(action)
             memory.append((observation, action, reward))
             observation = observation_
         # append terminal state
         memory.append((observation, action, reward))
 
-        G = 0
+        returns = 0
         last = True
         for state, action, reward in reversed(memory):
             if last:
                 last = False
             else:
-                statesReturns.append((state,G))
-            G = GAMMA*G + reward
+                states_returns.append((state, returns))
+            returns = DISCOUNT * returns + reward
 
-        statesReturns.reverse()
-        statesVisited = []
-        for state, G in statesReturns:
-            if state not in statesVisited:
-                returns[state].append(G)
-                V[state] = np.mean(returns[state])
-                statesVisited.append(state)
-    printV(V, grid)
+        states_returns.reverse()
+        states_visited = []
+        for state, estimate in states_returns:
+            if state not in states_visited:
+                RETURNS[state].append(returns)
+                VALUE_FUNCTION_ESTIMATE[state] = np.mean(RETURNS[state])
+                states_visited.append(state)
+
+    print_value_function(VALUE_FUNCTION_ESTIMATE, GRID)

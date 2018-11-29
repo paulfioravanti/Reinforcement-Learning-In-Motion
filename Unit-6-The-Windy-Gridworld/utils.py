@@ -1,11 +1,12 @@
 import numpy as np
-def printV(V, grid):
+
+def print_value_function(value_function, grid):
     for idx, row in enumerate(grid.grid):
-        for idy, _ in enumerate(row):
-            state = grid.m * idx + idy
-            print('%.2f' % V[state], end='\t')
-        print('\n')
-    print('--------------------')
+        for idy, _idx in enumerate(row):
+            state = grid.rows * idx + idy
+            print("%.2f" % value_function[state], end="\t")
+        print("\n")
+    print("--------------------")
 
 def printPolicy(policy, grid):
     for idx, row in enumerate(grid.grid):
