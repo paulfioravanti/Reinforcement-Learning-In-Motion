@@ -67,7 +67,7 @@ class GridWorld:
                 new_state not in self.all_spaces or
                 (
                     old_state % self.rows == 0 and
-                    new_state  % self.rows == self.rows - 1
+                    new_state % self.rows == self.rows - 1
                 ) or
                 old_state % self.rows == self.rows - 1 and
                 new_state % self.rows == 0
