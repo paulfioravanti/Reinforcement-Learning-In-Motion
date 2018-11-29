@@ -2,8 +2,8 @@ import numpy as np
 import gym
 import matplotlib.pyplot as plt
 
-if __name__ == '__main__':
-    env = gym.make('FrozenLake-v0')
+if __name__ == "__main__":
+    env = gym.make("FrozenLake-v0")
     GAMMA = 0.9
     EPS = 0.1
     possibleActions = [0, 1, 2, 3]
