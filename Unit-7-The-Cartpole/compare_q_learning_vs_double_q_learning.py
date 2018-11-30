@@ -97,7 +97,7 @@ if __name__ == "__main__":
             if rand < (1 - EPSILON):
                 action = max_action_over_estimates(ESTIMATES1, ESTIMATES2, state)
             else:
-                ENV.action_space.sample()
+                action = ENV.action_space.sample()
             observation_, reward, done, info = ENV.step(action)
             dq_episode_rewards += reward
             state_ = get_state(observation_)
