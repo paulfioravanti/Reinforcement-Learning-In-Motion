@@ -44,9 +44,10 @@ if __name__ == "__main__":
             ESTIMATES[state, action] = 0
 
     NUM_EPISODES = 50000
+    REPORT_INTERVAL = 5000
     TOTAL_REWARDS = np.zeros(NUM_EPISODES)
     for i in range(NUM_EPISODES):
-        if i % 5000 == 0:
+        if i % REPORT_INTERVAL == 0:
             print("starting game ", i)
         done = False
         episode_rewards = 0
