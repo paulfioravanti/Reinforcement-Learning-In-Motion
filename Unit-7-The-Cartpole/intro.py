@@ -1,16 +1,15 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import gym
 
+# returns action
 def simple_policy(state):
-    action = 0 if state < 0 else 1
-    return action
+    return 0 if state < 0 else 1
 
 if __name__ == "__main__":
     NUM_EPISODES = 1000
     ENV = gym.make("CartPole-v0")
 
-    total_rewards = []
+    TOTAL_REWARDS = []
     for i in range(NUM_EPISODES):
         # cart x position, cart velocity, pole angle (theta), pole velocity
         observation = ENV.reset()
@@ -22,7 +21,7 @@ if __name__ == "__main__":
             episode_rewards += reward
             observation = observation_
             ENV.render()
-        total_rewards.append(episode_rewards)
+        TOTAL_REWARDS.append(episode_rewards)
 
-    plt.plot(total_rewards)
+    plt.plot(TOTAL_REWARDS)
     plt.show()

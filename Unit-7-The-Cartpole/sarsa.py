@@ -1,10 +1,10 @@
 import numpy as np
 import gym
 from util import plot_running_average
-from gym import wrappers
 
+# pylint: disable-msg=redefined-outer-name
 def max_action(estimates, state):
-    values = np.array([estimates[state , i] for i in range(2)])
+    values = np.array([estimates[state, i] for i in range(2)])
     action = np.argmax(values)
     return action
 
@@ -23,7 +23,6 @@ POLE_THETA_VEL_SPACE = np.linspace(-4, 4, 10)
 CART_POS_SPACE = np.linspace(-2.4, 2.4, 10)
 CART_VEL_SPACE = np.linspace(-4, 4, 10)
 
-
 if __name__ == "__main__":
     ENV = gym.make("CartPole-v0")
     # model hyperparameters
@@ -32,15 +31,15 @@ if __name__ == "__main__":
     EPSILON = 1.0
 
     # construct state space
-    states = []
+    STATES = []
     for i in range(len(CART_POS_SPACE) + 1):
         for j in range(len(CART_VEL_SPACE) + 1):
             for k in range(len(POLE_THETA_SPACE) + 1):
                 for l in range(len(POLE_THETA_VEL_SPACE) + 1):
-                    states.append((i, j, k, l))
+                    STATES.append((i, j, k, l))
 
     ESTIMATES = {}
-    for state in states:
+    for state in STATES:
         for action in range(2):
             ESTIMATES[state, action] = 0
 
@@ -55,7 +54,11 @@ if __name__ == "__main__":
         observation = ENV.reset()
         state = get_state(observation)
         rand = np.random.random()
-        action = max_action(ESTIMATES, state) if rand < (1 - EPSILON) else ENV.action_space.sample()
+        if rand < (1 - EPSILON):
+            action = max_action(ESTIMATES, state)
+        else:
+            action = ENV.action_space.sample()
+
         done = False
         episode_rewards = 0
         while not done:
@@ -63,9 +66,12 @@ if __name__ == "__main__":
             episode_rewards += reward
             state_ = get_state(observation_)
             rand = np.random.random()
-            action_ = max_action(ESTIMATES, state_) if rand < (1 - EPSILON) else ENV.action_space.sample()
-            ESTIMATES[state,action] = (
-                ESTIMATES[state,action] + STEP_SIZE
+            if rand < (1 - EPSILON):
+                action_ = max_action(ESTIMATES, state)
+            else:
+                action_ = ENV.action_space.sample()
+            ESTIMATES[state, action] = (
+                ESTIMATES[state, action] + STEP_SIZE
                 * (reward + DISCOUNT * ESTIMATES[state_, action_] - ESTIMATES[state, action])
             )
             state, action = state_, action_

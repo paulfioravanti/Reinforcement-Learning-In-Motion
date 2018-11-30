@@ -1,6 +1,7 @@
 import numpy as np
 import gym
 
+# pylint: disable-msg=redefined-outer-name
 def simple_policy(state):
     action = 0 if state < 5 else 1
     return action
