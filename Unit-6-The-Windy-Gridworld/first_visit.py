@@ -1,5 +1,5 @@
-from windy_grid import WindyGrid
 import numpy as np
+from windy_grid import WindyGrid
 from utils import print_value_function
 
 if __name__ == "__main__":
